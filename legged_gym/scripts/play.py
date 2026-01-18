@@ -38,7 +38,7 @@ from legged_gym.utils import  get_args, export_policy_as_jit, task_registry, Log
 import numpy as np
 import torch
 
-
+# 验证入口
 def play(args):
     env_cfg, train_cfg = task_registry.get_cfgs(name=args.task)
     # override some parameters for testing
@@ -54,7 +54,7 @@ def play(args):
     env, _ = task_registry.make_env(name=args.task, args=args, env_cfg=env_cfg)
     obs = env.get_observations()
     # load policy
-    train_cfg.runner.resume = True
+    train_cfg.runner.resume = True  # 加载一个已经训练好的策略网络
     ppo_runner, train_cfg = task_registry.make_alg_runner(env=env, name=args.task, args=args, train_cfg=train_cfg)
     policy = ppo_runner.get_inference_policy(device=env.device)
     
@@ -77,16 +77,16 @@ def play(args):
     for i in range(10*int(env.max_episode_length)):
         actions = policy(obs.detach())
         obs, _, rews, dones, infos = env.step(actions.detach())
-        if RECORD_FRAMES:
+        if RECORD_FRAMES:   # 是否要记录帧
             if i % 2:
                 filename = os.path.join(LEGGED_GYM_ROOT_DIR, 'logs', train_cfg.runner.experiment_name, 'exported', 'frames', f"{img_idx}.png")
                 env.gym.write_viewer_image_to_file(env.viewer, filename)
                 img_idx += 1 
-        if MOVE_CAMERA:
+        if MOVE_CAMERA:     # 是否要调整摄像机的位置
             camera_position += camera_vel * env.dt
             env.set_camera(camera_position, camera_position + camera_direction)
 
-        if i < stop_state_log:
+        if i < stop_state_log:  # 记录日志
             logger.log_states(
                 {
                     'dof_pos_target': actions[robot_index, joint_index].item() * env.cfg.control.action_scale,
