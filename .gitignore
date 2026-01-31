@@ -57,5 +57,3 @@ runs
 # other
 *.egg-info
 __pycache__
-
-xt_dog/

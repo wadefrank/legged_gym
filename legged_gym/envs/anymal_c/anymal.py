@@ -69,7 +69,8 @@ class Anymal(LeggedRobot):
         self.sea_cell_state_per_env = self.sea_cell_state.view(2, self.num_envs, self.num_actions, 8)
 
     def _compute_torques(self, actions):
-        # Choose between pd controller and actuator network
+        # Choose between pd controller and actuator network（lstm）
+        # anymal机器人的关节加了弹簧去减振，导致关节变成了非刚性的模型（关节的扭矩不是通过电机输出的，而是通过弹簧传递）
         if self.cfg.control.use_actuator_network:
             with torch.inference_mode():
                 self.sea_input[:, 0, 0] = (actions * self.cfg.control.action_scale + self.default_dof_pos - self.dof_pos).flatten()
