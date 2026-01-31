@@ -90,11 +90,16 @@ class LeggedRobot(BaseTask):
         # step physics and render each frame
         self.render()
         for _ in range(self.cfg.control.decimation):
+            # 根据PD公式计算关节的输出扭矩
             self.torques = self._compute_torques(self.actions).view(self.torques.shape)
+            
+            # 设置状态信息
             self.gym.set_dof_actuation_force_tensor(self.sim, gymtorch.unwrap_tensor(self.torques))
             self.gym.simulate(self.sim)
             if self.device == 'cpu':
                 self.gym.fetch_results(self.sim, True)
+
+            # 更新状态信息
             self.gym.refresh_dof_state_tensor(self.sim)
         self.post_physics_step()
 
@@ -377,13 +382,16 @@ class LeggedRobot(BaseTask):
             [torch.Tensor]: Torques sent to the simulation
         """
         #pd controller
+        # 把actions进行缩放，action_scale一般小于1（目的：在训练初期能够较稳定的进行训练，加速收敛）
         actions_scaled = actions * self.cfg.control.action_scale
         control_type = self.cfg.control.control_type
-        if control_type=="P":
+        if control_type=="P":   # 位置控制模式（关节的位置表示关节的角度 值）
+            # PD控制公式： t = K_p*(q_d - q) + K_d*(v_d - v), v_d = 0
+            # K_p和K_d的值通过大量实验，以及行内的经验来设置
             torques = self.p_gains*(actions_scaled + self.default_dof_pos - self.dof_pos) - self.d_gains*self.dof_vel
-        elif control_type=="V":
+        elif control_type=="V": # 速度控制模式
             torques = self.p_gains*(actions_scaled - self.dof_vel) - self.d_gains*(self.dof_vel - self.last_dof_vel)/self.sim_params.dt
-        elif control_type=="T":
+        elif control_type=="T": # 扭矩控制模式
             torques = actions_scaled
         else:
             raise NameError(f"Unknown controller type: {control_type}")
@@ -497,16 +505,19 @@ class LeggedRobot(BaseTask):
         """ Initialize torch tensors which will contain simulation states and processed quantities
         """
         # get gym GPU state tensors
-        actor_root_state = self.gym.acquire_actor_root_state_tensor(self.sim)
-        dof_state_tensor = self.gym.acquire_dof_state_tensor(self.sim)
-        net_contact_forces = self.gym.acquire_net_contact_force_tensor(self.sim)
+        actor_root_state = self.gym.acquire_actor_root_state_tensor(self.sim)       # 机器人基座的状态信息（位置、旋转和速度）
+        dof_state_tensor = self.gym.acquire_dof_state_tensor(self.sim)              # 机器人关节的信息（关节角度、关节角速度）
+        net_contact_forces = self.gym.acquire_net_contact_force_tensor(self.sim)    # 机器人身体的各个部位收到的合力的信息
         self.gym.refresh_dof_state_tensor(self.sim)
         self.gym.refresh_actor_root_state_tensor(self.sim)
         self.gym.refresh_net_contact_force_tensor(self.sim)
 
         # create some wrapper tensors for different slices
+        # 数据格式转换，转化成pytorch tensor
         self.root_states = gymtorch.wrap_tensor(actor_root_state)
         self.dof_state = gymtorch.wrap_tensor(dof_state_tensor)
+
+        # dof_state拆分成dof_pos和dof_vel
         self.dof_pos = self.dof_state.view(self.num_envs, self.num_dof, 2)[..., 0]
         self.dof_vel = self.dof_state.view(self.num_envs, self.num_dof, 2)[..., 1]
         self.base_quat = self.root_states[:, 3:7]
