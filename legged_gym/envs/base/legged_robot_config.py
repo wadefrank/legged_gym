@@ -31,39 +31,63 @@
 from .base_config import BaseConfig
 
 class LeggedRobotCfg(BaseConfig):
+    """足式机器人环境主配置类，包含仿真环境的所有参数设置"""
+    
     class env:
-        num_envs = 4096
-        num_observations = 235
-        num_privileged_obs = None # if not None a priviledge_obs_buf will be returned by step() (critic obs for assymetric training). None is returned otherwise 
-        num_actions = 12
-        env_spacing = 3.  # not used with heightfields/trimeshes 
-        send_timeouts = True # send time out information to the algorithm
-        episode_length_s = 20 # episode length in seconds
+        """环境基本参数设置"""
+        num_envs = 4096             # 并行训练的环境数量，影响训练速度和GPU内存占用
+        num_observations = 235      # 观测空间维度（智能体感知的状态信息维度）
+        num_privileged_obs = None   # if not None a priviledge_obs_buf will be returned by step() (critic obs for assymetric training). None is returned otherwise 
+                                    # 特权观测维度，用于非对称训练（批评器可访问的额外信息）
+        num_actions = 12            # 动作空间维度（通常对应机器人关节数量，足式机器人的关节数一般为12个）
+        env_spacing = 3.            # not used with heightfields/trimeshes 
+                                    # 环境实例之间的间距（米）
+        send_timeouts = True        # send time out information to the algorithm
+                                    # 是否向算法发送超时信息
+        episode_length_s = 20       # episode length in seconds
+                                    # 每个回合的最大时长（秒）
 
     class terrain:
-        mesh_type = 'trimesh' # "heightfield" # none, plane, heightfield or trimesh
-        horizontal_scale = 0.1 # [m]
-        vertical_scale = 0.005 # [m]
-        border_size = 25 # [m]
-        curriculum = True
-        static_friction = 1.0
-        dynamic_friction = 1.0
-        restitution = 0.
-        # rough terrain only:
-        measure_heights = True
+        """地形生成参数设置"""
+        mesh_type = 'trimesh'       # "heightfield" # none, plane, heightfield or trimesh
+                                    # 地形类型：none, plane, heightfield, trimesh
+        horizontal_scale = 0.1      # 水平缩放比例（米/网格）[m]
+        vertical_scale = 0.005      # 垂直缩放比例（米/网格）[m]
+        border_size = 25            # 地形边界大小[m]
+        curriculum = True           # 是否使用课程学习（逐步增加地形难度）
+        static_friction = 1.0       # 静摩擦系数
+        dynamic_friction = 1.0      # 动摩擦系数
+        restitution = 0.            # 恢复系数（弹性）
+
+        # rough terrain only（只对非平坦地形）:
+
+        # 地形测量参数
+        measure_heights = True  # 是否测量地形高度
+
+        # X轴测量点位置（机器人前方）
         measured_points_x = [-0.8, -0.7, -0.6, -0.5, -0.4, -0.3, -0.2, -0.1, 0., 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8] # 1mx1.6m rectangle (without center line)
+        
+        # Y轴测量点位置（机器人两侧）
         measured_points_y = [-0.5, -0.4, -0.3, -0.2, -0.1, 0., 0.1, 0.2, 0.3, 0.4, 0.5]
-        selected = False # select a unique terrain type and pass all arguments
-        terrain_kwargs = None # Dict of arguments for selected terrain
-        max_init_terrain_level = 5 # starting curriculum state
-        terrain_length = 8.
-        terrain_width = 8.
-        num_rows= 10 # number of terrain rows (levels)
-        num_cols = 20 # number of terrain cols (types)
+       
+        # 地形选择参数
+        selected = False            # select a unique terrain type and pass all arguments
+                                    # 是否选择单一地形类型
+        terrain_kwargs = None       # Dict of arguments for selected terrain
+                                    # 特定地形的参数字典
+        max_init_terrain_level = 5  # starting curriculum state
+                                    # 初始课程学习等级
+        terrain_length = 8.         # 单个地形块长度
+        terrain_width = 8.          # 单个地形块宽度
+        num_rows= 10                # number of terrain rows (levels)
+                                    # 地形行数（难度等级）
+        num_cols = 20               # number of terrain cols (types)
+                                    # 地形列数（类型变化）
         # terrain types: [smooth slope, rough slope, stairs up, stairs down, discrete]
-        terrain_proportions = [0.1, 0.1, 0.35, 0.25, 0.2]
+        terrain_proportions = [0.1, 0.1, 0.35, 0.25, 0.2]   # 各地形类型比例
         # trimesh only:
-        slope_treshold = 0.75 # slopes above this threshold will be corrected to vertical surfaces
+        slope_treshold = 0.75       # slopes above this threshold will be corrected to vertical surfaces
+                                    # 坡度阈值，超过此值视为垂直面
 
     class commands:
         curriculum = False
@@ -78,11 +102,12 @@ class LeggedRobotCfg(BaseConfig):
             heading = [-3.14, 3.14]
 
     class init_state:
-        pos = [0.0, 0.0, 1.] # x,y,z [m]
-        rot = [0.0, 0.0, 0.0, 1.0] # x,y,z,w [quat]
-        lin_vel = [0.0, 0.0, 0.0]  # x,y,z [m/s]
-        ang_vel = [0.0, 0.0, 0.0]  # x,y,z [rad/s]
-        default_joint_angles = { # target angles when action = 0.0
+        """机器人初始状态设置"""
+        pos = [0.0, 0.0, 1.]        # 初始化位置：x,y,z [m]
+        rot = [0.0, 0.0, 0.0, 1.0]  # 初始姿态（四元数表示）：x,y,z,w [quat]
+        lin_vel = [0.0, 0.0, 0.0]   # 初始化线速度：x,y,z [m/s]
+        ang_vel = [0.0, 0.0, 0.0]   # 初始化角速度：x,y,z [rad/s]
+        default_joint_angles = {    # 默认关节角度：target angles when action = 0.0
             "joint_a": 0., 
             "joint_b": 0.}
 
@@ -97,26 +122,34 @@ class LeggedRobotCfg(BaseConfig):
         decimation = 4
 
     class asset:
-        file = ""
-        name = "legged_robot"  # actor name
-        foot_name = "None" # name of the feet bodies, used to index body state and contact force tensors
-        penalize_contacts_on = []
-        terminate_after_contacts_on = []
-        disable_gravity = False
-        collapse_fixed_joints = True # merge bodies connected by fixed joints. Specific fixed joints can be kept by adding " <... dont_collapse="true">
-        fix_base_link = False # fixe the base of the robot
-        default_dof_drive_mode = 3 # see GymDofDriveModeFlags (0 is none, 1 is pos tgt, 2 is vel tgt, 3 effort)
-        self_collisions = 0 # 1 to disable, 0 to enable...bitwise filter
-        replace_cylinder_with_capsule = True # replace collision cylinders with capsules, leads to faster/more stable simulation
-        flip_visual_attachments = True # Some .obj meshes must be flipped from y-up to z-up
+        """机器人资源文件参数"""
+        file = ""                               # URDF文件路径
+        name = "legged_robot"                   # actor name 机器人角色名称
+        foot_name = "None"                      # name of the feet bodies, used to index body state and contact force tensors
+                                                # 足部刚体名称，用于接触力计算
+        penalize_contacts_on = []               # 接触惩罚的刚体列表
+        terminate_after_contacts_on = []        # 接触后终止的刚体列表
+        disable_gravity = False                 # 是否禁用重力
+        collapse_fixed_joints = True            # merge bodies connected by fixed joints. Specific fixed joints can be kept by adding " <... dont_collapse="true">
+                                                # 是否合并固定连接的刚体
+        fix_base_link = False                   # fixe the base of the robot
+                                                # 是否固定基座链接
+        default_dof_drive_mode = 3              # see GymDofDriveModeFlags (0 is none, 1 is pos tgt, 2 is vel tgt, 3 effort)
+                                                # 关节驱动模式：0=无，1=位置，2=速度，3=力矩
+        self_collisions = 0                     # 1 to disable, 0 to enable...bitwise filter
+                                                # 自碰撞检测：0=启用，1=禁用
+        replace_cylinder_with_capsule = True    # replace collision cylinders with capsules, leads to faster/more stable simulation
+                                                # 用胶囊体替代圆柱体，提高稳定性
+        flip_visual_attachments = True          # Some .obj meshes must be flipped from y-up to z-up
         
-        density = 0.001
-        angular_damping = 0.
-        linear_damping = 0.
-        max_angular_velocity = 1000.
-        max_linear_velocity = 1000.
-        armature = 0.
-        thickness = 0.01
+        # 物理属性
+        density = 0.001                 # 密度[kg/m³]
+        angular_damping = 0.            # 角阻尼
+        linear_damping = 0.             # 线阻尼
+        max_angular_velocity = 1000.    # 最大角速度
+        max_linear_velocity = 1000.     # 最大线速度
+        armature = 0.                   # 臂惯量
+        thickness = 0.01                # 厚度
 
     class domain_rand:
         randomize_friction = True
@@ -181,23 +214,26 @@ class LeggedRobotCfg(BaseConfig):
         lookat = [11., 5, 3.]  # [m]
 
     class sim:
-        dt =  0.005
-        substeps = 1
-        gravity = [0., 0. ,-9.81]  # [m/s^2]
-        up_axis = 1  # 0 is y, 1 is z
+        """物理仿真参数"""
+        dt =  0.005                 # 仿真时间步长（秒），隔多长时间仿真平台计算一次
+        substeps = 1                # 物理子步数
+        gravity = [0., 0. ,-9.81]   # 重力向量[m/s^2]
+        up_axis = 1                 # 上轴方向：0 is y, 1 is z
 
         class physx:
-            num_threads = 10
-            solver_type = 1  # 0: pgs, 1: tgs
-            num_position_iterations = 4
-            num_velocity_iterations = 0
-            contact_offset = 0.01  # [m]
-            rest_offset = 0.0   # [m]
-            bounce_threshold_velocity = 0.5 #0.5 [m/s]
-            max_depenetration_velocity = 1.0
-            max_gpu_contact_pairs = 2**23 #2**24 -> needed for 8000 envs and more
-            default_buffer_size_multiplier = 5
-            contact_collection = 2 # 0: never, 1: last sub-step, 2: all sub-steps (default=2)
+            """NVIDIA PhysX物理引擎参数"""
+            num_threads = 10                    # 物理线程数
+            solver_type = 1                     # 求解器类型：0: pgs, 1: tgs
+            num_position_iterations = 4         # 位置迭代次数
+            num_velocity_iterations = 0         # 速度迭代次数
+            contact_offset = 0.01               # 接触偏移量[m]
+            rest_offset = 0.0                   # 静止偏移量[m]
+            bounce_threshold_velocity = 0.5     # 反弹阈值速度0.5 [m/s]
+            max_depenetration_velocity = 1.0    # 最大穿透恢复速度
+            max_gpu_contact_pairs = 2**23       # GPU最大接触对数 2**24 -> needed for 8000 envs and more
+            default_buffer_size_multiplier = 5  # 缓冲区大小乘数
+            contact_collection = 2              # 0: never, 1: last sub-step, 2: all sub-steps (default=2)
+                                                # 接触收集模式：0=从不，1=最后子步，2=所有子步
 
 class LeggedRobotCfgPPO(BaseConfig):
     seed = 1

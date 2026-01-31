@@ -81,7 +81,10 @@ class BaseTask():
         self.extras = {}
 
         # create envs, sim and viewer
+        # 创建仿真环境
         self.create_sim()
+
+        # 使仿真环境设置生效
         self.gym.prepare_sim(self.sim)
 
         # todo: read from config
@@ -91,10 +94,15 @@ class BaseTask():
         # if running with a viewer, set up keyboard shortcuts and camera
         if self.headless == False:
             # subscribe to keyboard shortcuts
+            # 订阅键盘快捷键
             self.viewer = self.gym.create_viewer(
                 self.sim, gymapi.CameraProperties())
+            
+            # 按Esc，推出仿真
             self.gym.subscribe_viewer_keyboard_event(
                 self.viewer, gymapi.KEY_ESCAPE, "QUIT")
+            
+            # 按V，暂停仿真渲染
             self.gym.subscribe_viewer_keyboard_event(
                 self.viewer, gymapi.KEY_V, "toggle_viewer_sync")
 
