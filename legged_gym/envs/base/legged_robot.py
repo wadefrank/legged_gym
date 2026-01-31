@@ -217,16 +217,16 @@ class LeggedRobot(BaseTask):
     def compute_observations(self):
         """ Computes observations
         """
-        self.obs_buf = torch.cat((  self.base_lin_vel * self.obs_scales.lin_vel,
-                                    self.base_ang_vel  * self.obs_scales.ang_vel,
-                                    self.projected_gravity,
-                                    self.commands[:, :3] * self.commands_scale,
-                                    (self.dof_pos - self.default_dof_pos) * self.obs_scales.dof_pos,
-                                    self.dof_vel * self.obs_scales.dof_vel,
-                                    self.actions
+        self.obs_buf = torch.cat((  self.base_lin_vel * self.obs_scales.lin_vel,                        # base_lin_vel (privileged) 速度信息（对未来的状态的估计）
+                                    self.base_ang_vel  * self.obs_scales.ang_vel,                       # base_ang_vel      角速度
+                                    self.projected_gravity,                                             # projected_gravity 重力方向投影
+                                    self.commands[:, :3] * self.commands_scale,                         # commands          指令（速度指令）
+                                    (self.dof_pos - self.default_dof_pos) * self.obs_scales.dof_pos,    # dof_pos           关节位置
+                                    self.dof_vel * self.obs_scales.dof_vel,                             # dof_vel           关节速度
+                                    self.actions                                                        # actions           推理
                                     ),dim=-1)
         # add perceptive inputs if not blind
-        if self.cfg.terrain.measure_heights:
+        if self.cfg.terrain.measure_heights:                                                            # heights (privileged) 地形的高度信息
             heights = torch.clip(self.root_states[:, 2].unsqueeze(1) - 0.5 - self.measured_heights, -1, 1.) * self.obs_scales.height_measurements
             self.obs_buf = torch.cat((self.obs_buf, heights), dim=-1)
         # add noise if needed

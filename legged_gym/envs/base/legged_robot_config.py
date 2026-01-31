@@ -38,7 +38,7 @@ class LeggedRobotCfg(BaseConfig):
         num_envs = 4096             # 并行训练的环境数量，影响训练速度和GPU内存占用
         num_observations = 235      # 观测空间维度（智能体感知的状态信息维度）
         num_privileged_obs = None   # if not None a priviledge_obs_buf will be returned by step() (critic obs for assymetric training). None is returned otherwise 
-                                    # 特权观测维度，用于非对称训练（批评器可访问的额外信息）
+                                    # 特权观测维度，特权观测是指只有在仿真中才能获得的数据（如本体移动的线速度），用于非对称训练（批评器可访问的额外信息）
         num_actions = 12            # 动作空间维度（通常对应机器人关节数量，足式机器人的关节数一般为12个）
         env_spacing = 3.            # not used with heightfields/trimeshes 
                                     # 环境实例之间的间距（米）
