@@ -1,6 +1,6 @@
 # SPDX-FileCopyrightText: Copyright (c) 2021 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: BSD-3-Clause
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
 #
@@ -37,9 +37,15 @@ from legged_gym.envs import *
 from legged_gym.utils import get_args, task_registry
 import torch
 
+# 训练入口
 def train(args):
+    # Step 1: 创建环境实例
     env, env_cfg = task_registry.make_env(name=args.task, args=args)
+    
+    # Step 2: 创建算法运行实例
     ppo_runner, train_cfg = task_registry.make_alg_runner(env=env, name=args.task, args=args)
+    
+    # Step 3: 启动训练
     ppo_runner.learn(num_learning_iterations=train_cfg.runner.max_iterations, init_at_random_ep_len=True)
 
 if __name__ == '__main__':
