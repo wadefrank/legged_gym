@@ -26,7 +26,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://xt_dog/meshes/base.STL" />
+          filename="../meshes/base.STL" />
       </geometry>
       <material
         name="">
@@ -40,7 +40,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://xt_dog/meshes/base.STL" />
+          filename="../meshes/base.STL" />
       </geometry>
     </collision>
   </link>
@@ -66,7 +66,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://xt_dog/meshes/FL_hip.STL" />
+          filename="../meshes/FL_hip.STL" />
       </geometry>
       <material
         name="">
@@ -80,7 +80,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://xt_dog/meshes/FL_hip.STL" />
+          filename="../meshes/FL_hip.STL" />
       </geometry>
     </collision>
   </link>
@@ -124,7 +124,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://xt_dog/meshes/FL_thigh.STL" />
+          filename="../meshes/FL_thigh.STL" />
       </geometry>
       <material
         name="">
@@ -138,7 +138,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://xt_dog/meshes/FL_thigh.STL" />
+          filename="../meshes/FL_thigh.STL" />
       </geometry>
     </collision>
   </link>
@@ -182,7 +182,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://xt_dog/meshes/FL_calf.STL" />
+          filename="../meshes/FL_calf.STL" />
       </geometry>
       <material
         name="">
@@ -196,7 +196,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://xt_dog/meshes/FL_calf.STL" />
+          filename="../meshes/FL_calf.STL" />
       </geometry>
     </collision>
   </link>
@@ -240,7 +240,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://xt_dog/meshes/FL_foot.STL" />
+          filename="../meshes/FL_foot.STL" />
       </geometry>
       <material
         name="">
@@ -254,7 +254,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://xt_dog/meshes/FL_foot.STL" />
+          filename="../meshes/FL_foot.STL" />
       </geometry>
     </collision>
   </link>
@@ -293,7 +293,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://xt_dog/meshes/FR_hip.STL" />
+          filename="../meshes/FR_hip.STL" />
       </geometry>
       <material
         name="">
@@ -307,7 +307,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://xt_dog/meshes/FR_hip.STL" />
+          filename="../meshes/FR_hip.STL" />
       </geometry>
     </collision>
   </link>
@@ -351,7 +351,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://xt_dog/meshes/FR_thigh.STL" />
+          filename="../meshes/FR_thigh.STL" />
       </geometry>
       <material
         name="">
@@ -365,7 +365,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://xt_dog/meshes/FR_thigh.STL" />
+          filename="../meshes/FR_thigh.STL" />
       </geometry>
     </collision>
   </link>
@@ -409,7 +409,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://xt_dog/meshes/FR_calf.STL" />
+          filename="../meshes/FR_calf.STL" />
       </geometry>
       <material
         name="">
@@ -423,7 +423,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://xt_dog/meshes/FR_calf.STL" />
+          filename="../meshes/FR_calf.STL" />
       </geometry>
     </collision>
   </link>
@@ -467,7 +467,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://xt_dog/meshes/FR_foot.STL" />
+          filename="../meshes/FR_foot.STL" />
       </geometry>
       <material
         name="">
@@ -481,7 +481,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://xt_dog/meshes/FR_foot.STL" />
+          filename="../meshes/FR_foot.STL" />
       </geometry>
     </collision>
   </link>
@@ -520,7 +520,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://xt_dog/meshes/RL_hip.STL" />
+          filename="../meshes/RL_hip.STL" />
       </geometry>
       <material
         name="">
@@ -534,7 +534,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://xt_dog/meshes/RL_hip.STL" />
+          filename="../meshes/RL_hip.STL" />
       </geometry>
     </collision>
   </link>
@@ -578,7 +578,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://xt_dog/meshes/RL_thigh.STL" />
+          filename="../meshes/RL_thigh.STL" />
       </geometry>
       <material
         name="">
@@ -592,7 +592,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://xt_dog/meshes/RL_thigh.STL" />
+          filename="../meshes/RL_thigh.STL" />
       </geometry>
     </collision>
   </link>
@@ -636,7 +636,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://xt_dog/meshes/RL_calf.STL" />
+          filename="../meshes/RL_calf.STL" />
       </geometry>
       <material
         name="">
@@ -650,7 +650,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://xt_dog/meshes/RL_calf.STL" />
+          filename="../meshes/RL_calf.STL" />
       </geometry>
     </collision>
   </link>
@@ -694,7 +694,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://xt_dog/meshes/RL_foot.STL" />
+          filename="../meshes/RL_foot.STL" />
       </geometry>
       <material
         name="">
@@ -708,7 +708,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://xt_dog/meshes/RL_foot.STL" />
+          filename="../meshes/RL_foot.STL" />
       </geometry>
     </collision>
   </link>
@@ -747,7 +747,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://xt_dog/meshes/RR_hip.STL" />
+          filename="../meshes/RR_hip.STL" />
       </geometry>
       <material
         name="">
@@ -761,7 +761,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://xt_dog/meshes/RR_hip.STL" />
+          filename="../meshes/RR_hip.STL" />
       </geometry>
     </collision>
   </link>
@@ -805,7 +805,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://xt_dog/meshes/RR_thigh.STL" />
+          filename="../meshes/RR_thigh.STL" />
       </geometry>
       <material
         name="">
@@ -819,7 +819,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://xt_dog/meshes/RR_thigh.STL" />
+          filename="../meshes/RR_thigh.STL" />
       </geometry>
     </collision>
   </link>
@@ -863,7 +863,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://xt_dog/meshes/RR_calf.STL" />
+          filename="../meshes/RR_calf.STL" />
       </geometry>
       <material
         name="">
@@ -877,7 +877,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://xt_dog/meshes/RR_calf.STL" />
+          filename="../meshes/RR_calf.STL" />
       </geometry>
     </collision>
   </link>
@@ -921,7 +921,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://xt_dog/meshes/RR_foot.STL" />
+          filename="../meshes/RR_foot.STL" />
       </geometry>
       <material
         name="">
@@ -935,7 +935,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://xt_dog/meshes/RR_foot.STL" />
+          filename="../meshes/RR_foot.STL" />
       </geometry>
     </collision>
   </link>
