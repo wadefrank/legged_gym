@@ -260,7 +260,8 @@
   </link>
   <joint
     name="FL_foot_joint"
-    type="fixed">
+    type="fixed"
+    dont_collapse="true">
     <origin
       xyz="0.084015 -0.0082942 -0.27535"
       rpy="0 0 0" />
@@ -487,7 +488,8 @@
   </link>
   <joint
     name="FR_foot_joint"
-    type="fixed">
+    type="fixed"
+    dont_collapse="true">
     <origin
       xyz="0.081967 -0.0081882 -0.27597"
       rpy="0 0 0" />
@@ -714,7 +716,8 @@
   </link>
   <joint
     name="RL_foot_joint"
-    type="fixed">
+    type="fixed"
+    dont_collapse="true">
     <origin
       xyz="0.11109 -8.7868E-05 -0.26571"
       rpy="0 0 0" />
@@ -941,7 +944,8 @@
   </link>
   <joint
     name="RR_foot_joint"
-    type="fixed">
+    type="fixed"
+    dont_collapse="true">
     <origin
       xyz="0.111 8.7868E-05 -0.26575"
       rpy="0 0 0" />

@@ -32,7 +32,7 @@ from legged_gym.envs.base.legged_robot_config import LeggedRobotCfg, LeggedRobot
 
 class XTDogRoughCfg( LeggedRobotCfg ):
     class env( LeggedRobotCfg.env) :
-        num_envs = 128         # 并行训练的环境数量，影响训练速度和GPU内存占用
+        num_envs = 4096          # 并行训练的环境数量，影响训练速度和GPU内存占用
     class init_state( LeggedRobotCfg.init_state ):
         pos = [0.0, 0.0, 0.48] # x,y,z [m]
         default_joint_angles = { # = target angles [rad] when action = 0.0
@@ -72,6 +72,7 @@ class XTDogRoughCfg( LeggedRobotCfg ):
         penalize_contacts_on = ["thigh", "calf"]
         terminate_after_contacts_on = ["base"]
         self_collisions = 1 # 1 to disable, 0 to enable...bitwise filter
+        flip_visual_attachments = False
   
     class rewards( LeggedRobotCfg.rewards ):
         soft_dof_pos_limit = 0.9
