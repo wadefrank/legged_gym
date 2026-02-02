@@ -112,14 +112,18 @@ class LeggedRobotCfg(BaseConfig):
             "joint_b": 0.}
 
     class control:
-        control_type = 'P' # P: position, V: velocity, T: torques
+        """机器人控制参数"""
+        control_type = 'P'                              # P: position, V: velocity, T: torques
+                                                        # 控制类型：P=位置，V=速度，T=力矩
+        
         # PD Drive parameters:
-        stiffness = {'joint_a': 10.0, 'joint_b': 15.}  # [N*m/rad]
-        damping = {'joint_a': 1.0, 'joint_b': 1.5}     # [N*m*s/rad]
+        # PD控制参数：
+        stiffness = {'joint_a': 10.0, 'joint_b': 15.}   # 关节刚度[N*m/rad]
+        damping = {'joint_a': 1.0, 'joint_b': 1.5}      # 关节阻尼[N*m*s/rad]
         # action scale: target angle = actionScale * action + defaultAngle
-        action_scale = 0.5
+        action_scale = 0.5                              # 动作缩放：目标角度=action_scale×动作+默认角度
         # decimation: Number of control action updates @ sim DT per policy DT
-        decimation = 4
+        decimation = 4                                  # 控制动作更新频率：仿真DT与策略DT的比率
 
     class asset:
         """机器人资源文件参数"""
@@ -152,39 +156,44 @@ class LeggedRobotCfg(BaseConfig):
         thickness = 0.01                # 厚度
 
     class domain_rand:
-        randomize_friction = True
-        friction_range = [0.5, 1.25]
-        randomize_base_mass = False
-        added_mass_range = [-1., 1.]
-        push_robots = True
-        push_interval_s = 15
-        max_push_vel_xy = 1.
+        """域随机化参数（增强仿真到实物的迁移能力）"""
+        randomize_friction = True       # 是否随机化摩擦系数
+        friction_range = [0.5, 1.25]    # 摩擦系数随机范围
+        randomize_base_mass = False     # 是否随机化基座质量
+        added_mass_range = [-1., 1.]    # 质量添加范围（千克）
+        push_robots = True              # 是否随机推动机器人
+        push_interval_s = 15            # 推动时间间隔（秒）
+        max_push_vel_xy = 1.            # 最大推动速度（米/秒）
 
     class rewards:
+        """奖励函数参数设置"""
         class scales:
-            termination = -0.0
-            tracking_lin_vel = 1.0
-            tracking_ang_vel = 0.5
-            lin_vel_z = -2.0
-            ang_vel_xy = -0.05
-            orientation = -0.
-            torques = -0.00001
-            dof_vel = -0.
-            dof_acc = -2.5e-7
-            base_height = -0. 
-            feet_air_time =  1.0
-            collision = -1.
-            feet_stumble = -0.0 
-            action_rate = -0.01
-            stand_still = -0.
+            termination = -0.0          # 终止奖励
+            tracking_lin_vel = 1.0      # 线速度跟踪奖励
+            tracking_ang_vel = 0.5      # 角速度跟踪奖励
+            lin_vel_z = -2.0            # Z轴线速度惩罚（防止跳跃）
+            ang_vel_xy = -0.05          # XY轴角速度惩罚（防止翻滚）
+            orientation = -0.           # 朝向惩罚
+            torques = -0.00001          # 力矩消耗惩罚
+            dof_vel = -0.               # 关节速度惩罚
+            dof_acc = -2.5e-7           # 关节加速度惩罚
+            base_height = -0.           # 基座高度惩罚
+            feet_air_time =  1.0        # 足部空中时间奖励（步态质量）
+            collision = -1.             # 碰撞惩罚
+            feet_stumble = -0.0         # 足部绊倒惩罚
+            action_rate = -0.01         # 动作变化率惩罚（平滑性）
+            stand_still = -0.           # 静止站立奖励
 
-        only_positive_rewards = True # if true negative total rewards are clipped at zero (avoids early termination problems)
-        tracking_sigma = 0.25 # tracking reward = exp(-error^2/sigma)
-        soft_dof_pos_limit = 1. # percentage of urdf limits, values above this limit are penalized
-        soft_dof_vel_limit = 1.
-        soft_torque_limit = 1.
-        base_height_target = 1.
-        max_contact_force = 100. # forces above this value are penalized
+        only_positive_rewards = True    # if true negative total rewards are clipped at zero (avoids early termination problems)
+                                        # 是否将负奖励裁剪为0（避免早终止问题）
+        tracking_sigma = 0.25           # tracking reward = exp(-error^2/sigma)
+                                        # 跟踪奖励的高斯sigma参数
+        soft_dof_pos_limit = 1.         # percentage of urdf limits, values above this limit are penalized
+                                        # 软关节位置限制（URDF限制的百分比）
+        soft_dof_vel_limit = 1.         # 软关节速度限制
+        soft_torque_limit = 1.          # 软力矩限制
+        base_height_target = 1.         # 基座高度目标值
+        max_contact_force = 100.        # forces above this value are penalized
 
     class normalization:
         class obs_scales:

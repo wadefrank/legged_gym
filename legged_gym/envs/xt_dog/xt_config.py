@@ -34,34 +34,34 @@ class XTDogRoughCfg( LeggedRobotCfg ):
     class env( LeggedRobotCfg.env) :
         num_envs = 4096          # 并行训练的环境数量，影响训练速度和GPU内存占用
     class init_state( LeggedRobotCfg.init_state ):
-        pos = [0.0, 0.0, 0.48] # x,y,z [m]
+        pos = [0.0, 0.0, 0.2] # x,y,z [m]
         default_joint_angles = { # = target angles [rad] when action = 0.0
             # hip关节（髋关节），负责腿部的横向运动
-            'FL_hip_joint': 0.0,   # [rad]
-            'RL_hip_joint': 0.0,   # [rad]
-            'FR_hip_joint': 0.0 ,  # [rad]
-            'RR_hip_joint': 0.0,   # [rad]
+            'FL_hip_joint': 0.1,   # [rad]
+            'RL_hip_joint': 0.1,   # [rad]
+            'FR_hip_joint': -0.1 ,  # [rad]
+            'RR_hip_joint': -0.1,   # [rad]
 
             # thigh关节（大腿关节），负责控制大腿的前后摆动
-            'FL_thigh_joint': 0.0,     # [rad]
-            'RL_thigh_joint': 0.0,   # [rad]
-            'FR_thigh_joint': 0.0,     # [rad]
-            'RR_thigh_joint': 0.0,   # [rad]
+            'FL_thigh_joint': 0.8,     # [rad]
+            'RL_thigh_joint': 1.0,   # [rad]
+            'FR_thigh_joint': 0.8,     # [rad]
+            'RR_thigh_joint': 1.0,   # [rad]
 
             # calf关节（小腿关节），决定膝关节的屈伸
-            'FL_calf_joint': 0.0,   # [rad]
-            'RL_calf_joint': 0.0,    # [rad]
-            'FR_calf_joint': 0.0,  # [rad]
-            'RR_calf_joint': 0.0,    # [rad]
+            'FL_calf_joint': -1.5,   # [rad]
+            'RL_calf_joint': -1.5,    # [rad]
+            'FR_calf_joint': -1.5,  # [rad]
+            'RR_calf_joint': -1.5,    # [rad]
         }
 
     class control( LeggedRobotCfg.control ):
         # PD Drive parameters:
         control_type = 'P'
-        stiffness = {'joint': 20.}  # [N*m/rad]
-        damping = {'joint': 0.5}     # [N*m*s/rad]
+        stiffness = {'joint': 10.0}  # [N*m/rad]
+        damping = {'joint': 0.01}     # [N*m*s/rad]
         # action scale: target angle = actionScale * action + defaultAngle
-        action_scale = 0.25
+        action_scale = 0.5
         # decimation: Number of control action updates @ sim DT per policy DT
         decimation = 4
 
@@ -77,6 +77,7 @@ class XTDogRoughCfg( LeggedRobotCfg ):
     class rewards( LeggedRobotCfg.rewards ):
         soft_dof_pos_limit = 0.9
         base_height_target = 0.25
+        # stand_still = 0.5
         class scales( LeggedRobotCfg.rewards.scales ):
             torques = -0.0002
             dof_pos_limits = -10.0
