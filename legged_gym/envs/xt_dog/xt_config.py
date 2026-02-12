@@ -58,10 +58,10 @@ class XTDogRoughCfg( LeggedRobotCfg ):
     class control( LeggedRobotCfg.control ):
         # PD Drive parameters:
         control_type = 'P'
-        stiffness = {'joint': 10.0}  # [N*m/rad]
-        damping = {'joint': 0.01}     # [N*m*s/rad]
+        stiffness = {'joint': 6.0}  # [N*m/rad]
+        damping = {'joint': 0.5}     # [N*m*s/rad]
         # action scale: target angle = actionScale * action + defaultAngle
-        action_scale = 0.5
+        action_scale = 0.3
         # decimation: Number of control action updates @ sim DT per policy DT
         decimation = 4
 
@@ -76,17 +76,24 @@ class XTDogRoughCfg( LeggedRobotCfg ):
   
     class rewards( LeggedRobotCfg.rewards ):
         soft_dof_pos_limit = 0.9
-        base_height_target = 0.25
-        # stand_still = 0.5
+        base_height_target = 0.3
         class scales( LeggedRobotCfg.rewards.scales ):
             torques = -0.0002
             dof_pos_limits = -10.0
+            tracking_lin_vel = 2.0
+            tracking_ang_vel = 1.0
+            orientation = -0.1
+            torques = -0.0001
+            dof_vel = -0.01
+            base_height = -0.01
+            feet_air_time = 1.5
+            action_rate = -0.02
 
 class XTDogRoughCfgPPO( LeggedRobotCfgPPO ):
     class algorithm( LeggedRobotCfgPPO.algorithm ):
         entropy_coef = 0.01
     class runner( LeggedRobotCfgPPO.runner ):
         run_name = ''
-        experiment_name = 'rough_xg_dog'
+        experiment_name = 'rough_xt_dog'
 
   
