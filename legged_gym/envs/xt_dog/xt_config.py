@@ -34,7 +34,7 @@ class XTDogRoughCfg( LeggedRobotCfg ):
     class env( LeggedRobotCfg.env) :
         num_envs = 4096          # 并行训练的环境数量，影响训练速度和GPU内存占用
     class init_state( LeggedRobotCfg.init_state ):
-        pos = [0.0, 0.0, 0.2] # x,y,z [m]
+        pos = [0.0, 0.0, 0.3] # x,y,z [m]
         default_joint_angles = { # = target angles [rad] when action = 0.0
             # hip关节（髋关节），负责腿部的横向运动
             'FL_hip_joint': 0.1,   # [rad]
